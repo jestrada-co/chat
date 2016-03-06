@@ -1,1 +1,9 @@
 C:\Users\jorge\Desktop\chat\Chat\Chat\bin\Debug\Chat.exe.config
+C:\Users\jorge\Desktop\chat\Chat\Chat\bin\Debug\Chat.exe
+C:\Users\jorge\Desktop\chat\Chat\Chat\bin\Debug\Chat.pdb
+C:\Users\jorge\Desktop\chat\Chat\Chat\obj\Debug\Chat.csprojResolveAssemblyReference.cache
+C:\Users\jorge\Desktop\chat\Chat\Chat\obj\Debug\Chat.frmMain.resources
+C:\Users\jorge\Desktop\chat\Chat\Chat\obj\Debug\Chat.Properties.Resources.resources
+C:\Users\jorge\Desktop\chat\Chat\Chat\obj\Debug\Chat.csproj.GenerateResource.Cache
+C:\Users\jorge\Desktop\chat\Chat\Chat\obj\Debug\Chat.exe
+C:\Users\jorge\Desktop\chat\Chat\Chat\obj\Debug\Chat.pdb
