@@ -25,6 +25,8 @@ namespace Chat
         NetworkStream streamCliente;
         // cadena de caracteres
         string mensaje;
+        NetworkStream streamServidor;
+        TcpClient clienteEnviar;
 
         public frmMain()
         {
@@ -49,7 +51,7 @@ namespace Chat
             try
             {
                 // instanciamos un TcpListener
-                servidor = new TcpListener(IPAddress.Parse(txtIP.Text), int.Parse(txtPuerto.Text));
+                servidor = new TcpListener(IPAddress.Parse(txtIP.Text), int.Parse(txtPuertoServidor.Text));
                 // empieza la escucha
                 servidor.Start();
                 // ciclo infinito de escucha
@@ -75,8 +77,24 @@ namespace Chat
 
         private void ImprimirMensaje(object sender, EventArgs e)
         {
+            mensaje = txtConversacion.Text + "\r\n" + mensaje;
             txtConversacion.Text = mensaje;
         }
 
+        private void btnEnviar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                clienteEnviar = new TcpClient(txtIP.Text, int.Parse(txtPuertoCliente.Text));
+                streamServidor = clienteEnviar.GetStream();
+                Byte[] datos = Encoding.ASCII.GetBytes(txtMensaje.Text);
+                streamServidor.Write(datos, 0, datos.Length);
+                streamServidor.Flush();
+            }
+            catch (Exception ex)
+            {
+                txtMensaje.Text = ex.ToString();
+            }
+        }
     }
 }
