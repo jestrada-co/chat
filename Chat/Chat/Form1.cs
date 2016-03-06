@@ -77,7 +77,10 @@ namespace Chat
 
         private void ImprimirMensaje(object sender, EventArgs e)
         {
-            mensaje = txtConversacion.Text + "\r\n" + mensaje;
+            if (txtConversacion.Text != "")
+            {
+                mensaje = txtConversacion.Text + "\r\n" + mensaje;
+            }
             txtConversacion.Text = mensaje;
         }
 
@@ -90,6 +93,8 @@ namespace Chat
                 Byte[] datos = Encoding.ASCII.GetBytes(txtMensaje.Text);
                 streamServidor.Write(datos, 0, datos.Length);
                 streamServidor.Flush();
+                txtMensaje.Text = "";
+                txtMensaje.Focus();
             }
             catch (Exception ex)
             {
