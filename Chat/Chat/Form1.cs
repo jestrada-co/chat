@@ -27,6 +27,7 @@ namespace Chat
         string mensaje;
         NetworkStream streamServidor;
         TcpClient clienteEnviar;
+        private int tecla = 0;
 
         public frmMain()
         {
@@ -141,8 +142,7 @@ namespace Chat
                 Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
                 streamServidor.Write(datos, 0, datos.Length);
                 streamServidor.Flush();
-                //txtMensaje.Text = "";
-                txtMensaje.ResetText();
+                txtMensaje.Text = "";
                 txtMensaje.Focus();
             }
             catch (Exception ex)
@@ -161,12 +161,18 @@ namespace Chat
             if ((int)e.KeyChar == (int)Keys.Enter)
             {
                 btnEnviar_Click(null, null);
+                tecla = (int)e.KeyChar;
             }
         }
 
-        private void txtMensaje_TextChanged(object sender, EventArgs e)
+        private void txtMensaje_KeyUp(object sender, KeyEventArgs e)
         {
-
+            if (tecla == (int)Keys.Enter)
+            {
+                txtMensaje.Text="";
+                txtMensaje.Focus();
+                tecla = 0;
+            }
         }
     }
 }

@@ -111,8 +111,8 @@
             this.txtMensaje.Name = "txtMensaje";
             this.txtMensaje.Size = new System.Drawing.Size(394, 44);
             this.txtMensaje.TabIndex = 5;
-            this.txtMensaje.TextChanged += new System.EventHandler(this.txtMensaje_TextChanged);
             this.txtMensaje.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMensaje_KeyPress);
+            this.txtMensaje.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMensaje_KeyUp);
             // 
             // label4
             // 
