@@ -42,6 +42,7 @@
             this.btnEnviar = new System.Windows.Forms.Button();
             this.txtPuertoCliente = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.btnSalir = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -58,14 +59,14 @@
             this.txtIP.Location = new System.Drawing.Point(53, 9);
             this.txtIP.Name = "txtIP";
             this.txtIP.Size = new System.Drawing.Size(100, 20);
-            this.txtIP.TabIndex = 1;
+            this.txtIP.TabIndex = 0;
             // 
             // txtPuertoServidor
             // 
             this.txtPuertoServidor.Location = new System.Drawing.Point(98, 35);
             this.txtPuertoServidor.Name = "txtPuertoServidor";
             this.txtPuertoServidor.Size = new System.Drawing.Size(55, 20);
-            this.txtPuertoServidor.TabIndex = 3;
+            this.txtPuertoServidor.TabIndex = 1;
             // 
             // label2
             // 
@@ -78,26 +79,26 @@
             // 
             // btnConectar
             // 
-            this.btnConectar.Location = new System.Drawing.Point(15, 87);
+            this.btnConectar.Location = new System.Drawing.Point(15, 113);
             this.btnConectar.Margin = new System.Windows.Forms.Padding(1);
             this.btnConectar.Name = "btnConectar";
             this.btnConectar.Size = new System.Drawing.Size(138, 23);
             this.btnConectar.TabIndex = 4;
-            this.btnConectar.Text = "Conectar";
+            this.btnConectar.Text = "Iniciar Servidor";
             this.btnConectar.UseVisualStyleBackColor = true;
             this.btnConectar.Click += new System.EventHandler(this.btnConectar_Click);
             // 
             // txtNick
             // 
-            this.txtNick.Location = new System.Drawing.Point(53, 114);
+            this.txtNick.Location = new System.Drawing.Point(53, 88);
             this.txtNick.Name = "txtNick";
             this.txtNick.Size = new System.Drawing.Size(100, 20);
-            this.txtNick.TabIndex = 6;
+            this.txtNick.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 118);
+            this.label3.Location = new System.Drawing.Point(12, 92);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 5;
@@ -109,7 +110,9 @@
             this.txtMensaje.Multiline = true;
             this.txtMensaje.Name = "txtMensaje";
             this.txtMensaje.Size = new System.Drawing.Size(394, 44);
-            this.txtMensaje.TabIndex = 8;
+            this.txtMensaje.TabIndex = 5;
+            this.txtMensaje.TextChanged += new System.EventHandler(this.txtMensaje_TextChanged);
+            this.txtMensaje.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMensaje_KeyPress);
             // 
             // label4
             // 
@@ -122,11 +125,13 @@
             // 
             // txtConversacion
             // 
+            this.txtConversacion.Enabled = false;
             this.txtConversacion.Location = new System.Drawing.Point(15, 153);
             this.txtConversacion.Multiline = true;
             this.txtConversacion.Name = "txtConversacion";
             this.txtConversacion.Size = new System.Drawing.Size(462, 305);
             this.txtConversacion.TabIndex = 10;
+            this.txtConversacion.TabStop = false;
             // 
             // label5
             // 
@@ -143,7 +148,7 @@
             this.btnEnviar.Margin = new System.Windows.Forms.Padding(1);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(60, 46);
-            this.btnEnviar.TabIndex = 11;
+            this.btnEnviar.TabIndex = 6;
             this.btnEnviar.Text = "Enviar";
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
@@ -153,7 +158,7 @@
             this.txtPuertoCliente.Location = new System.Drawing.Point(98, 62);
             this.txtPuertoCliente.Name = "txtPuertoCliente";
             this.txtPuertoCliente.Size = new System.Drawing.Size(55, 20);
-            this.txtPuertoCliente.TabIndex = 13;
+            this.txtPuertoCliente.TabIndex = 2;
             // 
             // label6
             // 
@@ -164,11 +169,23 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "Puerto Cliente";
             // 
+            // btnSalir
+            // 
+            this.btnSalir.Location = new System.Drawing.Point(417, 9);
+            this.btnSalir.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSalir.Name = "btnSalir";
+            this.btnSalir.Size = new System.Drawing.Size(60, 46);
+            this.btnSalir.TabIndex = 7;
+            this.btnSalir.Text = "Salir";
+            this.btnSalir.UseVisualStyleBackColor = true;
+            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(489, 533);
+            this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.txtPuertoCliente);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnEnviar);
@@ -207,6 +224,7 @@
         private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.TextBox txtPuertoCliente;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnSalir;
     }
 }
 

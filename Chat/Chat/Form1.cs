@@ -40,10 +40,58 @@ namespace Chat
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            // Thread es una clase que permite definir hilos
             Thread tarea = new Thread(hilo);
-            // Comienza el hilo
-            tarea.Start();
+            if (btnConectar.Text == "Iniciar Servidor")
+            {
+                if (ValidarCampos())
+                {
+                    // Thread es una clase que permite definir hilos
+                    // Comienza el hilo
+                    tarea.Start();
+                    txtIP.Enabled = false;
+                    txtPuertoCliente.Enabled = false;
+                    txtPuertoServidor.Enabled = false;
+                    txtNick.Enabled = false;
+                    btnConectar.Text = "Detener Servidor";
+                }
+                else
+                {
+                    MessageBox.Show("Debe diligenciar los campos anteriores!");
+                }
+
+            }
+            else
+            {
+                tarea.Abort();
+                txtIP.Enabled = true;
+                txtPuertoCliente.Enabled = true;
+                txtPuertoServidor.Enabled = true;
+                txtNick.Enabled = true;
+                btnConectar.Text = "Iniciar Servidor";
+            }
+
+        }
+
+        private Boolean ValidarCampos()
+        {
+            Boolean sw = true;
+            if (txtIP.Text == "")
+            {
+                sw = false;
+            }
+            if (txtPuertoCliente.Text == "")
+            {
+                sw = false;
+            }
+            if (txtPuertoServidor.Text == "")
+            {
+                sw = false;
+            }
+            if (txtNick.Text == "")
+            {
+                sw = false;
+            }
+            return sw;
         }
 
         private void hilo()
@@ -90,16 +138,35 @@ namespace Chat
             {
                 clienteEnviar = new TcpClient(txtIP.Text, int.Parse(txtPuertoCliente.Text));
                 streamServidor = clienteEnviar.GetStream();
-                Byte[] datos = Encoding.ASCII.GetBytes(txtMensaje.Text);
+                Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
                 streamServidor.Write(datos, 0, datos.Length);
                 streamServidor.Flush();
-                txtMensaje.Text = "";
+                //txtMensaje.Text = "";
+                txtMensaje.ResetText();
                 txtMensaje.Focus();
             }
             catch (Exception ex)
             {
                 txtMensaje.Text = ex.ToString();
             }
+        }
+
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void txtMensaje_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((int)e.KeyChar == (int)Keys.Enter)
+            {
+                btnEnviar_Click(null, null);
+            }
+        }
+
+        private void txtMensaje_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
