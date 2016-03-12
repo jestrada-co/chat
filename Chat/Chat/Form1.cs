@@ -42,6 +42,7 @@ namespace Chat
         private void btnConectar_Click(object sender, EventArgs e)
         {
             Thread tarea = new Thread(hilo);
+
             if (btnConectar.Text == "Iniciar Servidor")
             {
                 if (ValidarCampos())
@@ -120,7 +121,7 @@ namespace Chat
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -140,7 +141,9 @@ namespace Chat
                 clienteEnviar = new TcpClient(txtIP.Text, int.Parse(txtPuertoCliente.Text));
                 streamServidor = clienteEnviar.GetStream();
                 Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
+                mensaje = txtNick.Text + " @ " + txtMensaje.Text;
                 streamServidor.Write(datos, 0, datos.Length);
+                ImprimirMensaje(null, null);
                 streamServidor.Flush();
                 txtMensaje.Text = "";
                 txtMensaje.Focus();
@@ -154,6 +157,11 @@ namespace Chat
         private void btnSalir_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void terminarTareas()
+        {
+
         }
 
         private void txtMensaje_KeyPress(object sender, KeyPressEventArgs e)
