@@ -43,6 +43,8 @@
             this.txtPuertoCliente = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.btnSalir = new System.Windows.Forms.Button();
+            this.txtIPCliente = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -67,6 +69,8 @@
             this.txtPuertoServidor.Name = "txtPuertoServidor";
             this.txtPuertoServidor.Size = new System.Drawing.Size(55, 20);
             this.txtPuertoServidor.TabIndex = 1;
+            this.txtPuertoServidor.Text = "9001";
+            this.txtPuertoServidor.TextChanged += new System.EventHandler(this.txtPuertoServidor_TextChanged);
             // 
             // label2
             // 
@@ -79,26 +83,26 @@
             // 
             // btnConectar
             // 
-            this.btnConectar.Location = new System.Drawing.Point(15, 113);
+            this.btnConectar.Location = new System.Drawing.Point(15, 139);
             this.btnConectar.Margin = new System.Windows.Forms.Padding(1);
             this.btnConectar.Name = "btnConectar";
             this.btnConectar.Size = new System.Drawing.Size(138, 23);
-            this.btnConectar.TabIndex = 4;
+            this.btnConectar.TabIndex = 5;
             this.btnConectar.Text = "Iniciar Servidor";
             this.btnConectar.UseVisualStyleBackColor = true;
             this.btnConectar.Click += new System.EventHandler(this.btnConectar_Click);
             // 
             // txtNick
             // 
-            this.txtNick.Location = new System.Drawing.Point(53, 88);
+            this.txtNick.Location = new System.Drawing.Point(53, 115);
             this.txtNick.Name = "txtNick";
             this.txtNick.Size = new System.Drawing.Size(100, 20);
-            this.txtNick.TabIndex = 3;
+            this.txtNick.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 92);
+            this.label3.Location = new System.Drawing.Point(12, 119);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 5;
@@ -110,7 +114,7 @@
             this.txtMensaje.Multiline = true;
             this.txtMensaje.Name = "txtMensaje";
             this.txtMensaje.Size = new System.Drawing.Size(394, 44);
-            this.txtMensaje.TabIndex = 5;
+            this.txtMensaje.TabIndex = 6;
             this.txtMensaje.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMensaje_KeyPress);
             this.txtMensaje.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMensaje_KeyUp);
             // 
@@ -126,17 +130,17 @@
             // txtConversacion
             // 
             this.txtConversacion.Enabled = false;
-            this.txtConversacion.Location = new System.Drawing.Point(15, 153);
+            this.txtConversacion.Location = new System.Drawing.Point(15, 185);
             this.txtConversacion.Multiline = true;
             this.txtConversacion.Name = "txtConversacion";
-            this.txtConversacion.Size = new System.Drawing.Size(462, 305);
+            this.txtConversacion.Size = new System.Drawing.Size(462, 269);
             this.txtConversacion.TabIndex = 10;
             this.txtConversacion.TabStop = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 137);
+            this.label5.Location = new System.Drawing.Point(12, 169);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(72, 13);
             this.label5.TabIndex = 9;
@@ -148,22 +152,22 @@
             this.btnEnviar.Margin = new System.Windows.Forms.Padding(1);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(60, 46);
-            this.btnEnviar.TabIndex = 6;
+            this.btnEnviar.TabIndex = 7;
             this.btnEnviar.Text = "Enviar";
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
             // 
             // txtPuertoCliente
             // 
-            this.txtPuertoCliente.Location = new System.Drawing.Point(98, 62);
+            this.txtPuertoCliente.Location = new System.Drawing.Point(98, 89);
             this.txtPuertoCliente.Name = "txtPuertoCliente";
             this.txtPuertoCliente.Size = new System.Drawing.Size(55, 20);
-            this.txtPuertoCliente.TabIndex = 2;
+            this.txtPuertoCliente.TabIndex = 3;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 66);
+            this.label6.Location = new System.Drawing.Point(12, 93);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(73, 13);
             this.label6.TabIndex = 12;
@@ -175,16 +179,35 @@
             this.btnSalir.Margin = new System.Windows.Forms.Padding(1);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(60, 46);
-            this.btnSalir.TabIndex = 7;
+            this.btnSalir.TabIndex = 8;
             this.btnSalir.Text = "Salir";
             this.btnSalir.UseVisualStyleBackColor = true;
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+            // 
+            // txtIPCliente
+            // 
+            this.txtIPCliente.Location = new System.Drawing.Point(53, 61);
+            this.txtIPCliente.Name = "txtIPCliente";
+            this.txtIPCliente.Size = new System.Drawing.Size(100, 20);
+            this.txtIPCliente.TabIndex = 2;
+            this.txtIPCliente.TextChanged += new System.EventHandler(this.txtIPCliente_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 65);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "IP No";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(489, 533);
+            this.Controls.Add(this.txtIPCliente);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.txtPuertoCliente);
             this.Controls.Add(this.label6);
@@ -225,6 +248,8 @@
         private System.Windows.Forms.TextBox txtPuertoCliente;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnSalir;
+        private System.Windows.Forms.TextBox txtIPCliente;
+        private System.Windows.Forms.Label label7;
     }
 }
 

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading; // para usar hilos en mi aplicación
+using System.Net.NetworkInformation;
 
 namespace Chat
 {
@@ -36,7 +37,18 @@ namespace Chat
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-
+            IPHostEntry host;
+            string localIP = "";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily.ToString() == "InterNetwork")
+                {
+                    localIP = ip.ToString();
+                }
+            }
+            txtIP.Text = localIP;
+            txtIPCliente.Focus();
         }
 
         private void btnConectar_Click(object sender, EventArgs e)
@@ -138,7 +150,7 @@ namespace Chat
         {
             try
             {
-                clienteEnviar = new TcpClient(txtIP.Text, int.Parse(txtPuertoCliente.Text));
+                clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
                 streamServidor = clienteEnviar.GetStream();
                 Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
                 mensaje = txtNick.Text + " @ " + txtMensaje.Text;
@@ -181,6 +193,16 @@ namespace Chat
                 txtMensaje.Focus();
                 tecla = 0;
             }
+        }
+
+        private void txtIPCliente_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPuertoServidor_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
