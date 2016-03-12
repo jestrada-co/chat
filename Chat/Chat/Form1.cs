@@ -29,6 +29,7 @@ namespace Chat
         NetworkStream streamServidor;
         TcpClient clienteEnviar;
         private int tecla = 0;
+        private int cantMensajes = 0;
 
         public frmMain()
         {
@@ -48,6 +49,7 @@ namespace Chat
                 }
             }
             txtIP.Text = localIP;
+            txtIPCliente.Text = localIP;
             txtIPCliente.Focus();
         }
 
@@ -62,8 +64,8 @@ namespace Chat
                     // Thread es una clase que permite definir hilos
                     // Comienza el hilo
                     tarea.Start();
-                    txtIP.Enabled = false;
                     txtPuertoCliente.Enabled = false;
+                    txtIPCliente.Enabled = false;
                     txtPuertoServidor.Enabled = false;
                     txtNick.Enabled = false;
                     btnConectar.Text = "Detener Servidor";
@@ -77,8 +79,8 @@ namespace Chat
             else
             {
                 tarea.Abort();
-                txtIP.Enabled = true;
                 txtPuertoCliente.Enabled = true;
+                txtIPCliente.Enabled = true;
                 txtPuertoServidor.Enabled = true;
                 txtNick.Enabled = true;
                 btnConectar.Text = "Iniciar Servidor";
@@ -119,6 +121,7 @@ namespace Chat
                 // ciclo infinito de escucha
                 while (true)
                 {
+                    cantMensajes = 0;
                     cliente = servidor.AcceptTcpClient();
                     bytesCliente = new byte[256];
                     streamCliente = cliente.GetStream();
@@ -144,21 +147,30 @@ namespace Chat
                 mensaje = txtConversacion.Text + "\r\n" + mensaje;
             }
             txtConversacion.Text = mensaje;
+            txtConversacion.ScrollToCaret();
         }
 
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             try
             {
-                clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
-                streamServidor = clienteEnviar.GetStream();
-                Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
-                mensaje = txtNick.Text + " @ " + txtMensaje.Text;
-                streamServidor.Write(datos, 0, datos.Length);
-                ImprimirMensaje(null, null);
-                streamServidor.Flush();
-                txtMensaje.Text = "";
-                txtMensaje.Focus();
+                if (cantMensajes < 10)
+                {
+                    clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
+                    streamServidor = clienteEnviar.GetStream();
+                    Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
+                    mensaje = txtNick.Text + " @ " + txtMensaje.Text;
+                    streamServidor.Write(datos, 0, datos.Length);
+                    ImprimirMensaje(null, null);
+                    streamServidor.Flush();
+                    cantMensajes = cantMensajes + 1;
+                    txtMensaje.Text = "";
+                    txtMensaje.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Mensaje no enviado");
+                }
             }
             catch (Exception ex)
             {
@@ -201,6 +213,31 @@ namespace Chat
         }
 
         private void txtPuertoServidor_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

@@ -50,24 +50,28 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label1.Location = new System.Drawing.Point(12, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.Size = new System.Drawing.Size(52, 17);
             this.label1.TabIndex = 0;
-            this.label1.Text = "IP No";
+            this.label1.Text = "IP Local";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtIP
             // 
-            this.txtIP.Location = new System.Drawing.Point(53, 9);
+            this.txtIP.Enabled = false;
+            this.txtIP.Location = new System.Drawing.Point(86, 9);
             this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(100, 20);
+            this.txtIP.Size = new System.Drawing.Size(81, 20);
             this.txtIP.TabIndex = 0;
             // 
             // txtPuertoServidor
             // 
-            this.txtPuertoServidor.Location = new System.Drawing.Point(98, 35);
+            this.txtPuertoServidor.Location = new System.Drawing.Point(119, 35);
             this.txtPuertoServidor.Name = "txtPuertoServidor";
-            this.txtPuertoServidor.Size = new System.Drawing.Size(55, 20);
+            this.txtPuertoServidor.Size = new System.Drawing.Size(48, 20);
             this.txtPuertoServidor.TabIndex = 1;
             this.txtPuertoServidor.Text = "9001";
             this.txtPuertoServidor.TextChanged += new System.EventHandler(this.txtPuertoServidor_TextChanged);
@@ -75,18 +79,21 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label2.Location = new System.Drawing.Point(12, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.Size = new System.Drawing.Size(101, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "Puerto Servidor";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // btnConectar
             // 
             this.btnConectar.Location = new System.Drawing.Point(15, 139);
             this.btnConectar.Margin = new System.Windows.Forms.Padding(1);
             this.btnConectar.Name = "btnConectar";
-            this.btnConectar.Size = new System.Drawing.Size(138, 23);
+            this.btnConectar.Size = new System.Drawing.Size(152, 23);
             this.btnConectar.TabIndex = 5;
             this.btnConectar.Text = "Iniciar Servidor";
             this.btnConectar.UseVisualStyleBackColor = true;
@@ -94,7 +101,7 @@
             // 
             // txtNick
             // 
-            this.txtNick.Location = new System.Drawing.Point(53, 115);
+            this.txtNick.Location = new System.Drawing.Point(67, 115);
             this.txtNick.Name = "txtNick";
             this.txtNick.Size = new System.Drawing.Size(100, 20);
             this.txtNick.TabIndex = 4;
@@ -102,11 +109,14 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label3.Location = new System.Drawing.Point(12, 119);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.Size = new System.Drawing.Size(33, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "Nick";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtMensaje
             // 
@@ -129,10 +139,10 @@
             // 
             // txtConversacion
             // 
-            this.txtConversacion.Enabled = false;
             this.txtConversacion.Location = new System.Drawing.Point(15, 185);
             this.txtConversacion.Multiline = true;
             this.txtConversacion.Name = "txtConversacion";
+            this.txtConversacion.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtConversacion.Size = new System.Drawing.Size(462, 269);
             this.txtConversacion.TabIndex = 10;
             this.txtConversacion.TabStop = false;
@@ -159,19 +169,22 @@
             // 
             // txtPuertoCliente
             // 
-            this.txtPuertoCliente.Location = new System.Drawing.Point(98, 89);
+            this.txtPuertoCliente.Location = new System.Drawing.Point(119, 89);
             this.txtPuertoCliente.Name = "txtPuertoCliente";
-            this.txtPuertoCliente.Size = new System.Drawing.Size(55, 20);
+            this.txtPuertoCliente.Size = new System.Drawing.Size(48, 20);
             this.txtPuertoCliente.TabIndex = 3;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label6.Location = new System.Drawing.Point(12, 93);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(73, 13);
+            this.label6.Size = new System.Drawing.Size(91, 17);
             this.label6.TabIndex = 12;
             this.label6.Text = "Puerto Cliente";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // btnSalir
             // 
@@ -186,25 +199,29 @@
             // 
             // txtIPCliente
             // 
-            this.txtIPCliente.Location = new System.Drawing.Point(53, 61);
+            this.txtIPCliente.Location = new System.Drawing.Point(86, 61);
             this.txtIPCliente.Name = "txtIPCliente";
-            this.txtIPCliente.Size = new System.Drawing.Size(100, 20);
+            this.txtIPCliente.Size = new System.Drawing.Size(81, 20);
             this.txtIPCliente.TabIndex = 2;
             this.txtIPCliente.TextChanged += new System.EventHandler(this.txtIPCliente_TextChanged);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.RoyalBlue;
             this.label7.Location = new System.Drawing.Point(12, 65);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.Size = new System.Drawing.Size(68, 17);
             this.label7.TabIndex = 14;
-            this.label7.Text = "IP No";
+            this.label7.Text = "IP Destino";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(489, 533);
             this.Controls.Add(this.txtIPCliente);
             this.Controls.Add(this.label7);
