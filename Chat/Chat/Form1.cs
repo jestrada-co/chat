@@ -16,20 +16,22 @@ namespace Chat
 {
     public partial class frmMain : Form
     {
-        // tcplistener objeto para hacer escucha a través de un socket
-        private TcpListener servidor;
-        // conexion con el cliente
-        private TcpClient cliente;
-        // definir un flujo de bytes
-        Byte[] bytesCliente;
-        // definir un stream de bytes que viene desde el cliente
-        NetworkStream streamCliente;
-        // cadena de caracteres
-        string mensaje;
+        private TcpListener servidor;           // servidor escucha a través de un socket
+        private TcpClient cliente;              // conexion con el cliente
+
+        Byte[] bytesCliente;                    // bytesCliente es un flujo de bytes
+
+        NetworkStream streamCliente;            // definir un stream de bytes que viene desde el cliente
+  
         NetworkStream streamServidor;
         TcpClient clienteEnviar;
-        private int tecla = 0;
+
+        Thread escuchar;
+        
+        private bool tecla = false;
+        private bool estadoServidor = false;
         private int cantMensajes = 0;
+        private string mensaje;
 
         public frmMain()
         {
@@ -38,154 +40,260 @@ namespace Chat
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            txtIP.Text = obtenerIPLocal().ToString();
+            txtIPCliente.Text = obtenerIPLocal().ToString();
+            txtIPCliente.Focus();
+        }
+
+        private IPAddress obtenerIPLocal()
+        {
             IPHostEntry host;
-            string localIP = "";
+            IPAddress localIP = null;
             host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in host.AddressList)
             {
                 if (ip.AddressFamily.ToString() == "InterNetwork")
                 {
-                    localIP = ip.ToString();
+                    localIP = ip;
                 }
             }
-            txtIP.Text = localIP;
-            txtIPCliente.Text = localIP;
-            txtIPCliente.Focus();
+            return localIP;
         }
+
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            Thread tarea = new Thread(hilo);
-
             if (btnConectar.Text == "Iniciar Servidor")
             {
-                if (ValidarCampos())
+                if (ValidarCampos("iniciarServidor"))
                 {
-                    // Thread es una clase que permite definir hilos
-                    // Comienza el hilo
-                    tarea.Start();
-                    txtPuertoCliente.Enabled = false;
-                    txtIPCliente.Enabled = false;
-                    txtPuertoServidor.Enabled = false;
-                    txtNick.Enabled = false;
+                    iniciarServidor(true);
+                    habilitarCampos(false,"iniciarServidor");
                     btnConectar.Text = "Detener Servidor";
                 }
-                else
-                {
-                    MessageBox.Show("Debe diligenciar los campos anteriores!");
-                }
-
             }
             else
             {
-                tarea.Abort();
-                txtPuertoCliente.Enabled = true;
-                txtIPCliente.Enabled = true;
-                txtPuertoServidor.Enabled = true;
-                txtNick.Enabled = true;
+                iniciarServidor(false);
+                habilitarCampos(true, "iniciarServidor");
                 btnConectar.Text = "Iniciar Servidor";
             }
-
         }
 
-        private Boolean ValidarCampos()
+        private bool iniciarServidor(bool estado)
+        {
+            if (estado)
+            {
+                escuchar = new Thread(servidorEscucha);
+                escuchar.Start();
+                estadoServidor = true;
+                return true;
+            }
+            else
+            {
+                if (estadoServidor)
+                {
+                    servidor.Stop();
+                    estadoServidor = false;
+                    escuchar.Abort();
+                }
+                //escuchar.Abort();
+                return false;
+            }
+        }
+
+        private void habilitarCampos(bool estado, string proceso)
+        {
+            if (proceso == "iniciarServidor")
+            {
+                txtIP.Enabled = estado;
+                txtPuertoServidor.Enabled = estado;
+            }
+            else
+            {
+                if(proceso == "enviarMensaje")
+                {
+                    txtIPCliente.Enabled = estado;
+                    txtPuertoCliente.Enabled = estado;
+                    txtNick.Enabled = estado;
+                }
+            }
+        }
+
+        private Boolean ValidarCampos(string proceso)
         {
             Boolean sw = true;
-            if (txtIP.Text == "")
+            String mensajeError="";
+
+            if (proceso == "iniciarServidor")
             {
-                sw = false;
+                mensajeError = "Error al iniciar el servior FTP. Favor validar los siguientes campos: ";
+                if (txtIP.Text == "")
+                {
+                    mensajeError = ", la Dirección IP Local";
+                    sw = false;
+                }
+                if (txtPuertoServidor.Text == "")
+                {
+                    mensajeError = mensajeError + ", el Puerto Local";
+                    sw = false;
+                }
             }
-            if (txtPuertoCliente.Text == "")
+            else
             {
-                sw = false;
+                if (proceso == "enviarMensaje")
+                {
+                    mensajeError = "Error al iniciar el enviar mensaje vía FTP. Favor Validar los siguientes campos: ";
+                    if (txtIPCliente.Text == "")
+                    {
+                        mensajeError = "la Dirección IP Destino";
+                        sw = false;
+                    }
+                    if (txtPuertoCliente.Text == "")
+                    {
+                        mensajeError = mensajeError + ", el Puerto Destino";
+                        sw = false;
+                    }
+                    if (txtNick.Text == "")
+                    {
+                        mensajeError = mensajeError + ", el NickName";
+                        sw = false;
+                    }
+                    if (txtMensaje.Text == "")
+                    {
+                        mensajeError = mensajeError + ", el mensaje a enviar";
+                        sw = false;
+                    }
+                }
             }
-            if (txtPuertoServidor.Text == "")
+            if (!sw)
             {
-                sw = false;
-            }
-            if (txtNick.Text == "")
-            {
-                sw = false;
+                mensajeError = mensajeError + ".";
+                MessageBox.Show(mensajeError, "Error en Diligenciamiento de Campos", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             return sw;
         }
 
-        private void hilo()
+        private void servidorEscucha()
         {
             try
             {
-                // instanciamos un TcpListener
                 servidor = new TcpListener(IPAddress.Parse(txtIP.Text), int.Parse(txtPuertoServidor.Text));
-                // empieza la escucha
                 servidor.Start();
-                // ciclo infinito de escucha
+                estadoServidor = true;
+
                 while (true)
                 {
-                    cantMensajes = 0;
                     cliente = servidor.AcceptTcpClient();
+                    cantMensajes = 0;
                     bytesCliente = new byte[256];
                     streamCliente = cliente.GetStream();
-                    // aquí hemos colocado en la variable bytesCliente el 
-                    // flujo de datos que viene del cliente
                     streamCliente.Read(bytesCliente, 0, bytesCliente.Length);
-                    // convertimos el clujo de bytes en cadena de texto
                     mensaje = Encoding.ASCII.GetString(bytesCliente, 0, bytesCliente.Length);
-                    // invocando al hilo principal
-                    txtConversacion.Invoke(new EventHandler(ImprimirMensaje));
+                    txtConversacion.Invoke(new EventHandler(imprimirMensaje));
                 }
             }
-            catch (Exception ex)
+            catch (Exception error)
             {
-                MessageBox.Show(ex.ToString());
+                iniciarServidor(false);
+                if (error.HResult.ToString() == "-2147467259")
+                {
+                    MessageBox.Show("El equipo " + txtIP.Text + " a través del Puerto " + txtPuertoServidor.Text + " no permitió la conexión. Por favor valide la dirección IP y Puerto del equipo para recibir por TCP.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    habilitarCampos(true, "iniciarServidor");
+                }
+                else
+                {
+                    if(error.HResult.ToString()== "-2146233040")
+                    {
+                        MessageBox.Show("El equipo " + txtIP.Text + " a través del Puerto " + txtPuertoServidor.Text + " ha detenido el servidor TCP.", "Servidor Detenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        habilitarCampos(true, "iniciarServidor");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error no manejado ------- " + error.ToString());
+
+                    }
+                }
             }
         }
 
-        private void ImprimirMensaje(object sender, EventArgs e)
+        private void imprimirMensaje(object sender, EventArgs e)
         {
             if (txtConversacion.Text != "")
             {
-                mensaje = txtConversacion.Text + "\r\n" + mensaje;
+                txtConversacion.Text = txtConversacion.Text + Environment.NewLine + mensaje;
             }
-            txtConversacion.Text = mensaje;
-            txtConversacion.ScrollToCaret();
+            else
+            {
+                txtConversacion.Text = mensaje;
+            }
+        }
+
+        private void enviarMensaje()
+        {
+            try
+            {
+                clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
+                streamServidor = clienteEnviar.GetStream();
+                mensaje = txtNick.Text + " @ " + txtMensaje.Text;
+                Byte[] datos = Encoding.ASCII.GetBytes(mensaje);
+                streamServidor.Write(datos, 0, datos.Length);
+                streamServidor.Flush();
+                imprimirMensaje(null, null);
+                alistarTexbox(null, null);
+            }
+            catch (Exception error)
+            {
+                if (error.HResult.ToString() == "-2147467259")
+                {
+                    MessageBox.Show("El equipo " + txtIPCliente.Text + " a través del Puerto " + txtPuertoCliente.Text + " no permitió la conexión. Por favor valide la dirección IP y Puerto del equipo Cliente.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    habilitarCampos(true, "enviarMensaje");
+                }
+                else
+                {
+                    MessageBox.Show(error.Message.ToString());
+                }
+            }
+
         }
 
         private void btnEnviar_Click(object sender, EventArgs e)
         {
-            try
+            if (cantMensajes < 10)
             {
-                if (cantMensajes < 10)
+                if (estadoServidor == true)
                 {
-                    clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
-                    streamServidor = clienteEnviar.GetStream();
-                    Byte[] datos = Encoding.ASCII.GetBytes(txtNick.Text + " @ " + txtMensaje.Text);
-                    mensaje = txtNick.Text + " @ " + txtMensaje.Text;
-                    streamServidor.Write(datos, 0, datos.Length);
-                    ImprimirMensaje(null, null);
-                    streamServidor.Flush();
-                    cantMensajes = cantMensajes + 1;
-                    txtMensaje.Text = "";
-                    txtMensaje.Focus();
+                    if (ValidarCampos("iniciarServidor"))
+                    {
+                        if (ValidarCampos("enviarMensaje"))
+                        {
+                            enviarMensaje();
+                            cantMensajes = cantMensajes + 1;
+                        }
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Mensaje no enviado");
+                    MessageBox.Show("No se ha iniciado el Servidor FTP.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                txtMensaje.Text = ex.ToString();
+                MessageBox.Show("Mensaje no enviado. Debe esperar que el otro usuario responda un mensaje para continuar la conversación.", "Política Anti SPAM", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
+        }
+
+
+        private void alistarTexbox(object sender, EventArgs e)
+        {
+            txtMensaje.Text = "";
+            txtMensaje.Focus();
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
+            iniciarServidor(false);
             Application.Exit();
-        }
-
-        private void terminarTareas()
-        {
-
         }
 
         private void txtMensaje_KeyPress(object sender, KeyPressEventArgs e)
@@ -193,53 +301,22 @@ namespace Chat
             if ((int)e.KeyChar == (int)Keys.Enter)
             {
                 btnEnviar_Click(null, null);
-                tecla = (int)e.KeyChar;
+                tecla = true;
             }
         }
 
         private void txtMensaje_KeyUp(object sender, KeyEventArgs e)
         {
-            if (tecla == (int)Keys.Enter)
+            if (tecla)
             {
-                txtMensaje.Text="";
-                txtMensaje.Focus();
-                tecla = 0;
+                alistarTexbox(null, null);
+                tecla = false;
             }
         }
 
-        private void txtIPCliente_TextChanged(object sender, EventArgs e)
+        private void txtConversacion_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-
-        }
-
-        private void txtPuertoServidor_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
+            System.Diagnostics.Process.Start(e.LinkText);
         }
     }
 }

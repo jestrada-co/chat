@@ -37,7 +37,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtMensaje = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtConversacion = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.txtPuertoCliente = new System.Windows.Forms.TextBox();
@@ -45,6 +44,7 @@
             this.btnSalir = new System.Windows.Forms.Button();
             this.txtIPCliente = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.txtConversacion = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -57,11 +57,9 @@
             this.label1.Size = new System.Drawing.Size(52, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "IP Local";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtIP
             // 
-            this.txtIP.Enabled = false;
             this.txtIP.Location = new System.Drawing.Point(86, 9);
             this.txtIP.Name = "txtIP";
             this.txtIP.Size = new System.Drawing.Size(81, 20);
@@ -74,7 +72,6 @@
             this.txtPuertoServidor.Size = new System.Drawing.Size(48, 20);
             this.txtPuertoServidor.TabIndex = 1;
             this.txtPuertoServidor.Text = "9001";
-            this.txtPuertoServidor.TextChanged += new System.EventHandler(this.txtPuertoServidor_TextChanged);
             // 
             // label2
             // 
@@ -86,7 +83,6 @@
             this.label2.Size = new System.Drawing.Size(101, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "Puerto Servidor";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // btnConectar
             // 
@@ -116,7 +112,6 @@
             this.label3.Size = new System.Drawing.Size(33, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "Nick";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtMensaje
             // 
@@ -136,16 +131,6 @@
             this.label4.Size = new System.Drawing.Size(47, 13);
             this.label4.TabIndex = 7;
             this.label4.Text = "Mensaje";
-            // 
-            // txtConversacion
-            // 
-            this.txtConversacion.Location = new System.Drawing.Point(15, 185);
-            this.txtConversacion.Multiline = true;
-            this.txtConversacion.Name = "txtConversacion";
-            this.txtConversacion.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConversacion.Size = new System.Drawing.Size(462, 269);
-            this.txtConversacion.TabIndex = 10;
-            this.txtConversacion.TabStop = false;
             // 
             // label5
             // 
@@ -184,7 +169,6 @@
             this.label6.Size = new System.Drawing.Size(91, 17);
             this.label6.TabIndex = 12;
             this.label6.Text = "Puerto Cliente";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // btnSalir
             // 
@@ -203,7 +187,6 @@
             this.txtIPCliente.Name = "txtIPCliente";
             this.txtIPCliente.Size = new System.Drawing.Size(81, 20);
             this.txtIPCliente.TabIndex = 2;
-            this.txtIPCliente.TextChanged += new System.EventHandler(this.txtIPCliente_TextChanged);
             // 
             // label7
             // 
@@ -215,7 +198,15 @@
             this.label7.Size = new System.Drawing.Size(68, 17);
             this.label7.TabIndex = 14;
             this.label7.Text = "IP Destino";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // txtConversacion
+            // 
+            this.txtConversacion.Location = new System.Drawing.Point(13, 185);
+            this.txtConversacion.Name = "txtConversacion";
+            this.txtConversacion.Size = new System.Drawing.Size(463, 273);
+            this.txtConversacion.TabIndex = 16;
+            this.txtConversacion.Text = "";
+            this.txtConversacion.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.txtConversacion_LinkClicked);
             // 
             // frmMain
             // 
@@ -223,13 +214,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(489, 533);
+            this.Controls.Add(this.txtConversacion);
             this.Controls.Add(this.txtIPCliente);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.txtPuertoCliente);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnEnviar);
-            this.Controls.Add(this.txtConversacion);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtMensaje);
             this.Controls.Add(this.label4);
@@ -259,7 +250,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtMensaje;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtConversacion;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.TextBox txtPuertoCliente;
@@ -267,6 +257,7 @@
         private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.TextBox txtIPCliente;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RichTextBox txtConversacion;
     }
 }
 
