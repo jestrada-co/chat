@@ -93,11 +93,18 @@ namespace Chat
             {
                 if (estadoServidor)
                 {
-                    servidor.Stop();
-                    estadoServidor = false;
-                    escuchar.Abort();
+                    try
+                    {
+                        MessageBox.Show("entro por aqui");
+                        servidor.Stop();
+                        escuchar.Abort();
+                        estadoServidor = false;
+                    }
+                    catch (Exception error)
+                    {
+                        MessageBox.Show(error.HResult.ToString());
+                    }
                 }
-                //escuchar.Abort();
                 return false;
             }
         }
@@ -195,7 +202,7 @@ namespace Chat
             }
             catch (Exception error)
             {
-                iniciarServidor(false);
+                //iniciarServidor(false);
                 if (error.HResult.ToString() == "-2147467259")
                 {
                     MessageBox.Show("El equipo " + txtIP.Text + " a través del Puerto " + txtPuertoServidor.Text + " no permitió la conexión. Por favor valide la dirección IP y Puerto del equipo para recibir por TCP.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -244,6 +251,7 @@ namespace Chat
             }
             catch (Exception error)
             {
+                cantMensajes = cantMensajes - 1;
                 if (error.HResult.ToString() == "-2147467259")
                 {
                     MessageBox.Show("El equipo " + txtIPCliente.Text + " a través del Puerto " + txtPuertoCliente.Text + " no permitió la conexión. Por favor valide la dirección IP y Puerto del equipo Cliente.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Information);
