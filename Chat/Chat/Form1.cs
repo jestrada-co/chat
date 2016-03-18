@@ -30,6 +30,7 @@ namespace Chat
         
         private bool tecla = false;
         private bool estadoServidor = false;
+        bool sw = true;
         private int cantMensajes = 0;
         private string mensaje;
 
@@ -95,7 +96,6 @@ namespace Chat
                 {
                     try
                     {
-                        MessageBox.Show("entro por aqui");
                         servidor.Stop();
                         escuchar.Abort();
                         estadoServidor = false;
@@ -166,7 +166,7 @@ namespace Chat
                         mensajeError = mensajeError + ", el NickName";
                         sw = false;
                     }
-                    if (txtMensaje.Text == "")
+                    if (string.IsNullOrWhiteSpace(txtMensaje.Text))
                     {
                         mensajeError = mensajeError + ", el mensaje a enviar";
                         sw = false;
@@ -226,14 +226,80 @@ namespace Chat
 
         private void imprimirMensaje(object sender, EventArgs e)
         {
-            if (txtConversacion.Text != "")
+            if (mensaje.CompareTo("zumbido")==0)
             {
-                txtConversacion.Text = txtConversacion.Text + Environment.NewLine + mensaje;
+                timer1.Enabled = true;
             }
             else
             {
-                txtConversacion.Text = mensaje;
+                if (string.IsNullOrEmpty(txtConversacion.Text))
+                {
+                    if (mensaje.CompareTo(":)") == 0)
+                    {
+                        if (Clipboard.ContainsImage())
+                        {
+                            Clipboard.Clear();
+                        }
+                        Clipboard.SetImage(imgList.Images[0]);
+                        txtConversacion.ScrollToCaret();
+                        txtConversacion.Paste();
+                    }
+                    else
+                    {
+                        if (mensaje.CompareTo(":(") == 0)
+                        {
+                            if (Clipboard.ContainsImage())
+                            {
+                                Clipboard.Clear();
+                            }
+                            Clipboard.SetImage(imgList.Images[1]);
+                            txtConversacion.ScrollToCaret();
+                            txtConversacion.Paste();
+                        }
+                        else
+                        {
+                            txtConversacion.Text = mensaje;
+                        }
+                    }
+                }
+                else
+                {
+                    if (mensaje.CompareTo(":)") == 0)
+                    {
+                        //if (Clipboard.ContainsImage())
+                        //{
+                        //    Clipboard.Clear();
+                        //}
+                        Clipboard.SetImage(imgList.Images[0]);
+                        txtConversacion.ScrollToCaret();
+                        txtConversacion.Paste();
+                    }
+                    else
+                    {
+                        if (mensaje.CompareTo(":(") == 0)
+                        {
+                            //if (Clipboard.ContainsImage())
+                            //{
+                            //    Clipboard.Clear();
+                            //}
+                            Clipboard.SetImage(imgList.Images[1]);
+                            txtConversacion.ScrollToCaret();
+                            txtConversacion.Paste();
+                        }
+                        else
+                        {
+                            txtConversacion.Text = txtConversacion.Text + mensaje;
+                        }
+                    }
+                }
+                txtConversacion.ScrollToCaret();
             }
+
+        }
+
+        private void zumbido(int constante)
+        {
+
         }
 
         private void enviarMensaje()
@@ -262,8 +328,35 @@ namespace Chat
                     MessageBox.Show(error.Message.ToString());
                 }
             }
-
         }
+
+        private void enviarZumbido()
+        {
+            try
+            {
+                clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
+                streamServidor = clienteEnviar.GetStream();
+                mensaje = "zumbido";
+                Byte[] datos = Encoding.ASCII.GetBytes(mensaje);
+                streamServidor.Write(datos, 0, datos.Length);
+                streamServidor.Flush();
+                imprimirMensaje(null, null);
+                alistarTexbox(null, null);
+            }
+            catch (Exception error)
+            {
+                if (error.HResult.ToString() == "-2147467259")
+                {
+                    MessageBox.Show("El equipo " + txtIPCliente.Text + " a través del Puerto " + txtPuertoCliente.Text + " no permitió la conexión. Por favor valide la dirección IP y Puerto del equipo Cliente.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    habilitarCampos(true, "enviarMensaje");
+                }
+                else
+                {
+                    MessageBox.Show(error.Message.ToString());
+                }
+            }
+        }
+
 
         private void btnEnviar_Click(object sender, EventArgs e)
         {
@@ -326,5 +419,66 @@ namespace Chat
         {
             System.Diagnostics.Process.Start(e.LinkText);
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            int x = 10;
+            int y = 10;
+            int constante = 10;
+            //constante = constante + Convert.ToInt16(ActiveForm.Location.X);
+            // MessageBox.Show(frmMain.ActiveForm.Left.ToString());
+            //  ActiveForm.Location = new Point();
+            frmMain.ActiveForm.Location = new Point(x, y);
+            x = x + constante;
+            constante = constante * -1;
+            if (timer1.Interval == 2000)
+            {
+                timer1.Enabled = false;
+                MessageBox.Show("finish");
+            }
+        }
+
+        private void btnZumbido_Click(object sender, EventArgs e)
+        {
+            enviarZumbido();
+        }
+
+        private void btnFeliz_Click(object sender, EventArgs e)
+        {
+            enviarCarita(":)");
+        }
+
+        private void enviarCarita(string estado)
+        {
+            try
+            {
+                clienteEnviar = new TcpClient(txtIPCliente.Text, int.Parse(txtPuertoCliente.Text));
+                streamServidor = clienteEnviar.GetStream();
+                mensaje = estado;
+                Byte[] datos = Encoding.ASCII.GetBytes(mensaje);
+                streamServidor.Write(datos, 0, datos.Length);
+                streamServidor.Flush();
+                imprimirMensaje(null, null);
+                alistarTexbox(null, null);
+            }
+            catch (Exception error)
+            {
+                if (error.HResult.ToString() == "-2147467259")
+                {
+                    MessageBox.Show("El equipo " + txtIPCliente.Text + " a través del Puerto " + txtPuertoCliente.Text + " no permitió la conexión. Por favor valide la dirección IP y Puerto del equipo Cliente.", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    habilitarCampos(true, "enviarMensaje");
+                }
+                else
+                {
+                    MessageBox.Show(error.Message.ToString());
+                }
+            }
+        }
+
+        private void btnTriste_Click(object sender, EventArgs e)
+        {
+            enviarCarita(":(");
+        }
+        
     }
 }
