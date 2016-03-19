@@ -236,25 +236,39 @@ namespace Chat
                 {
                     if (mensaje.CompareTo(":)") == 0)
                     {
-                        if (Clipboard.ContainsImage())
-                        {
-                            Clipboard.Clear();
-                        }
-                        Clipboard.SetImage(imgList.Images[0]);
-                        txtConversacion.ScrollToCaret();
-                        txtConversacion.Paste();
-                    }
-                    else
-                    {
-                        if (mensaje.CompareTo(":(") == 0)
+                        try
                         {
                             if (Clipboard.ContainsImage())
                             {
                                 Clipboard.Clear();
                             }
-                            Clipboard.SetImage(imgList.Images[1]);
+                            Clipboard.SetImage(imgList.Images[0]);
                             txtConversacion.ScrollToCaret();
                             txtConversacion.Paste();
+                        }
+                        catch(Exception error)
+                        {
+                            MessageBox.Show(error.Message);
+                        }
+                    }
+                    else
+                    {
+                        if (mensaje.CompareTo(":(") == 0)
+                        {
+                            try
+                            {
+                                if (Clipboard.ContainsImage())
+                                {
+                                    Clipboard.Clear();
+                                }
+                                Clipboard.SetImage(imgList.Images[0]);
+                                txtConversacion.ScrollToCaret();
+                                txtConversacion.Paste();
+                            }
+                            catch(Exception error)
+                            {
+                                MessageBox.Show(error.Message);
+                            }
                         }
                         else
                         {
@@ -266,25 +280,33 @@ namespace Chat
                 {
                     if (mensaje.CompareTo(":)") == 0)
                     {
-                        //if (Clipboard.ContainsImage())
-                        //{
-                        //    Clipboard.Clear();
-                        //}
-                        Clipboard.SetImage(imgList.Images[0]);
-                        txtConversacion.ScrollToCaret();
-                        txtConversacion.Paste();
+                        try
+                        {
+                            Clipboard.Clear();
+                            Clipboard.SetImage(imgList.Images[0]);
+                            txtConversacion.ScrollToCaret();
+                            txtConversacion.Paste();
+                        }
+                        catch(Exception error)
+                        {
+                            MessageBox.Show(error.Message);
+                        }
                     }
                     else
                     {
                         if (mensaje.CompareTo(":(") == 0)
                         {
-                            //if (Clipboard.ContainsImage())
-                            //{
-                            //    Clipboard.Clear();
-                            //}
-                            Clipboard.SetImage(imgList.Images[1]);
-                            txtConversacion.ScrollToCaret();
-                            txtConversacion.Paste();
+                            try
+                            {
+                                Clipboard.Clear();
+                                Clipboard.SetImage(imgList.Images[1]);
+                                txtConversacion.ScrollToCaret();
+                                txtConversacion.Paste();
+                            }
+                            catch(Exception error)
+                            {
+                                MessageBox.Show(error.Message);
+                            }
                         }
                         else
                         {
